@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Aod Ming aomsin</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(to bottom, #00bcd4, #0288d1); /* ไล่สีจากฟ้าไปฟ้าเข้ม */
+            color: #000; /* เปลี่ยนสีตัวอักษรเป็นสีดำ */
+            transition: background-color 0.3s ease;
+        }
+        .container {
+            text-align: center;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            max-width: 400px;
+            width: 100%;
+            border: 2px solid #0288d1; /* สีขอบเข้ากับโทนสีฟ้า */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .container:hover {
+            transform: translateY(-10px); /* เอฟเฟกต์เคลื่อนไหวเมื่อวางเมาส์บนกล่อง */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #000; /* สีของหัวข้อเป็นสีดำ */
+        }
+        input[type="number"] {
+            padding: 10px;
+            width: calc(100% - 24px);
+            font-size: 16px;
+            margin-bottom: 15px;
+            border: 1px solid #0288d1;
+            border-radius: 4px;
+            background-color: #e0f7fa;
+            color: #000; /* เปลี่ยนสีของตัวอักษรในช่องกรอกข้อมูลเป็นสีดำ */
+            transition: border-color 0.3s ease;
+        }
+        input[type="number"]:focus {
+            border-color: #00bcd4; /* เปลี่ยนสีขอบเมื่อเลือกช่องกรอกข้อมูล */
+        }
+        input[type="number"]::placeholder {
+            color: #0288d1;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #00bcd4; /* ปรับสีปุ่มให้เข้ากับโทนเย็น */
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        button:hover {
+            background-color: #0288d1; /* เมื่อกดปุ่มให้สีเข้มขึ้น */
+            transform: scale(1.05); /* ขยายปุ่มเมื่อวางเมาส์ */
+        }
+        #result {
+            margin-top: 20px;
+            text-align: left;
+            background-color: #e0f7fa;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #0288d1;
+            color: #000; /* เปลี่ยนสีข้อความในผลลัพธ์เป็นสีดำ */
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        #result.show {
+            opacity: 1;
+        }
+        #result b {
+            color: #0288d1;
+        }
+        #result div {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Prime Factorization</h1>
+        <input type="number" id="numberInput" placeholder="Enter a positive integer" min="1" />
+        <button onclick="findPrimeFactors()">Find Prime Factors</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function findPrimeFactors() {
+            let num = parseInt(document.getElementById('numberInput').value);
+            if (isNaN(num) || num < 1) {
+                document.getElementById('result').innerHTML = "<div>Please enter a positive integer.</div>";
+                document.getElementById('result').classList.remove('show');
+                return;
+            }
+
+            let originalNum = num;
+            let factors = {};
+            let steps = [];
+
+            for (let i = 2; i <= num; i++) {
+                while (num % i === 0) {
+                    factors[i] = (factors[i] || 0) + 1;
+                    steps.push(`Divide ${num} by ${i} = ${num / i}`);
+                    num /= i;
+                }
+            }
+
+            // Display factors in exponential form using <sup> for exponents
+            const allFactorsDisplay = `<b>Output Prime Factor of ${originalNum}:</b> ` +
+                Object.keys(factors).map(factor => `${factor}<sup>${factors[factor]}</sup>`).join(' x ');
+
+            // Display calculation steps
+            const stepsDisplay = `<b>Steps:</b><br/>${steps.join('<br/>')}`;
+
+            const resultElement = document.getElementById('result');
+            resultElement.innerHTML = `<div>${stepsDisplay}</div><div>${allFactorsDisplay}</div>`;
+            resultElement.classList.add('show'); // เพิ่มคลาส 'show' เพื่อแสดงผลลัพธ์ด้วยการเปลี่ยนความโปร่งใส
+        }
+    </script>
+</body>
+</html>
